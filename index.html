@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema de Restaurante - Comandas</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Sistema de Comandas</h1>
+      <p>Panel de administración de restaurante</p>
+    </header>
+
+    <main class="dashboard">
+      <section class="panel panel-mesas" aria-label="Sección de mesas">
+        <div class="panel-header">
+          <h2><i class="fa-solid fa-chair" aria-hidden="true"></i> Mesas</h2>
+          <span class="badge"></span>
+        </div>
+
+        <div class="mesas-grid">
+          
+        </div>
+      </section>
+
+      <section class="panel panel-menu" aria-label="Sección de menú">
+        <div class="panel-header">
+          <h2><i class="fa-solid fa-receipt" aria-hidden="true"></i> Menú</h2>
+          <span class="badge">8 productos</span>
+        </div>
+
+        <div class="menu-grid">
+          <article class="producto-card">
+            <img
+              src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=800&q=80"
+              alt="Pizza Margarita"
+            />
+            <div class="producto-info">
+              <h3>Pizza Margarita</h3>
+              <p class="categoria comida"><i class="fa-solid fa-utensils"></i> Comida</p>
+              <p class="precio">Q65</p>
+              <button type="button">Agregar</button>
+            </div>
+          </article>
+
+          <!-- <article class="producto-card">
+            <img
+              src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80"
+              alt="Hamburguesa"
+            />
+            <div class="producto-info">
+              <h3>Hamburguesa</h3>
+              <p class="categoria comida"><i class="fa-solid fa-utensils"></i> Comida</p>
+              <p class="precio">Q55</p>
+              <button type="button">Agregar</button>
+            </div>
+          </article>
+
+          <article class="producto-card">
+            <img
+              src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=800&q=80"
+              alt="Limonada"
+            />
+            <div class="producto-info">
+              <h3>Limonada</h3>
+              <p class="categoria bebida"><i class="fa-solid fa-mug-straw"></i> Bebida</p>
+              <p class="precio">Q18</p>
+              <button type="button">Agregar</button>
+            </div>
+          </article>
+
+          <article class="producto-card">
+            <img
+              src="https://images.unsplash.com/photo-1579954115563-e72bf1381629?auto=format&fit=crop&w=800&q=80"
+              alt="Pastel de Chocolate"
+            />
+            <div class="producto-info">
+              <h3>Pastel de Chocolate</h3>
+              <p class="categoria postre"><i class="fa-solid fa-ice-cream"></i> Postre</p>
+              <p class="precio">Q25</p>
+              <button type="button">Agregar</button>
+            </div>
+          </article>
+
+          <article class="producto-card">
+            <img
+              src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80"
+              alt="Ensalada César"
+            />
+            <div class="producto-info">
+              <h3>Ensalada César</h3>
+              <p class="categoria comida"><i class="fa-solid fa-utensils"></i> Comida</p>
+              <p class="precio">Q42</p>
+              <button type="button">Agregar</button>
+            </div>
+          </article>
+
+          <article class="producto-card">
+            <img
+              src="https://images.unsplash.com/photo-1551024709-8f23befc6cf7?auto=format&fit=crop&w=800&q=80"
+              alt="Café Latte"
+            />
+            <div class="producto-info">
+              <h3>Café Latte</h3>
+              <p class="categoria bebida"><i class="fa-solid fa-mug-straw"></i> Bebida</p>
+              <p class="precio">Q22</p>
+              <button type="button">Agregar</button>
+            </div>
+          </article>
+
+          <article class="producto-card">
+            <img
+              src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=800&q=80"
+              alt="Flan de Vainilla"
+            />
+            <div class="producto-info">
+              <h3>Flan de Vainilla</h3>
+              <p class="categoria postre"><i class="fa-solid fa-ice-cream"></i> Postre</p>
+              <p class="precio">Q20</p>
+              <button type="button">Agregar</button>
+            </div>
+          </article>
+
+          <article class="producto-card">
+            <img
+              src="https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=800&q=80"
+              alt="Tacos de Pollo"
+            />
+            <div class="producto-info">
+              <h3>Tacos de Pollo</h3>
+              <p class="categoria comida"><i class="fa-solid fa-utensils"></i> Comida</p>
+              <p class="precio">Q48</p>
+              <button type="button">Agregar</button>
+            </div>
+          </article> -->
+        </div>
+      </section>
+
+      <aside class="panel panel-comanda d-none" aria-label="Comanda actual">
+        <div class="panel-header">
+          <h2 id="tituloMesa"><i class="fa-solid fa-ticket" aria-hidden="true"></i></h2>
+        </div>
+
+        <section class="mesa-detalle" aria-label="Detalle de mesa seleccionada">
+          <div class="mesa-detalle-head">
+            <p class="mesa-detalle-titulo"><i class="fa-solid fa-chair"></i> Mesa seleccionada</p>
+            <span class="mesa-estado ocupada"></span>
+          </div>
+          <div class="mesa-detalle-info">
+            <!-- <p><strong>Mesa:</strong> #1</p>
+            <p><strong>Meseros:</strong> 2 asignados</p>
+            <p><strong>Personas:</strong> 4 comensales</p>
+            <p><strong>Hora apertura:</strong> 07:35 PM</p> -->
+          </div>
+          <div class="mesa-detalle-acciones">
+            <button type="button" class="btn abrir-cuenta"><i class="fa-solid fa-money-bill-wave"></i> Abrir cuenta</button>
+            <button type="button" class="btn unir-mesa"><i class="fa-solid fa-link"></i> Unir mesa</button>
+          </div>
+        </section>
+
+        <div class="tabla-wrap d-none">
+          <table>
+            <thead>
+              <tr>
+                <th>Cantidad</th>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Pizza Margarita</td>
+                <td>Q65</td>
+                <td>Q65</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Limonada</td>
+                <td>Q18</td>
+                <td>Q36</td>
+              </tr>
+            </tbody>
+          </table>
+        </div> 
+
+        <div class="totales d-none">
+          <p><span>Subtotal:</span> <strong>Q101</strong></p>
+          <p><span>Impuestos:</span> <strong>Q12</strong></p>
+          <p class="total"><span><i class="fa-solid fa-money-bill-wave"></i> Total:</span> <strong>Q113</strong></p>
+        </div>
+
+        <div class="acciones d-none">
+          <button type="button" class="btn cobrar">Cobrar</button>
+          <button type="button" class="btn cancelar">Cancelar Comanda</button>
+        </div>
+      </aside>
+    </main>
+
+    <script src="./app.js"> </script>
+  </body>
+</html>
