@@ -410,6 +410,13 @@ th {
 .d-none{
   display: none;
 }
+
+article p,
+article span,
+article h3{
+  pointer-events: none;
+}
+
 @media (max-width: 1080px) {
   .dashboard {
     grid-template-columns: 1fr 1fr;
