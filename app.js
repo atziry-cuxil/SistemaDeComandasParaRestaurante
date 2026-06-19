@@ -8,10 +8,12 @@ class Producto {
     #id;
     #nombre;
     #precio;
+    #url;
 
-    constructor(nombre, precio) {
+    constructor(nombre, precio,url) {
         this.#nombre = nombre
         this.#precio = precio
+        this.#url = url
         this.#id = Date.now() + Math.ceil(Math.random() * 1000)
     }
 
@@ -25,6 +27,10 @@ class Producto {
 
     get id() {
         return this.#id
+    }
+
+    get url (){
+        return this.#url
     }
 
     notificarAEstacion() {
@@ -265,28 +271,68 @@ class Comanda {
               </tr> `
         }
         tablaPedido.innerHTML = html
-        subtotal.textContent = `Q ${this.subtotal - (this.subtotal * this.#impuestos).toFixed(2)}`
-        impuestos.textContent = (this.subtotal * this.#impuestos).toFixed(2)
+        subtotal.textContent = `Q ${this.subtotal - (this.subtotal * this.#impuestos).toFixed(2)}`//En esta parte solo realice las operaiconees y las pinte
+        impuestos.textContent = (this.subtotal * this.#impuestos).toFixed(2)//no las guarde en variables
         total.textContent = ((this.subtotal - (this.subtotal * this.#impuestos)) + (this.subtotal * this.#impuestos)).toFixed(2)
     }
 
     cobrar() {
-        this.#estado = 'Preparando'//En pantalla de comandas
+        this.#estado = 'Preparando'//En pantalla de comandas proximamente
         tablaPedido.innerHTML = " "
         subtotal.textContent = '0.00'
         impuestos.textContent = '0.00'
         total.textContent = '0.00'
         alert('Comanda, Enviada')
-
     }
 }
 
 //Clases/objetos
 const restaurante = new Restaurante('El gordo', 8)
+
 const productos = [
-    new Producto('Cafe Late', 25),
-    new Producto('Cafe helado', 20)
-]
+    // Comida
+    new Producto('Hamburguesa Clásica', 55, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPwa_I0gVVPuun0mxexSASVn4PfIZnYRlQBFwwCPALHL17Hr4eOKe5Po&s=10'),
+    new Producto('Hamburguesa Doble', 75, 'https://www.elytienda.com/cdn/shop/products/hamburguesa_doble_carne.jpg?v=1706491389'),
+    new Producto('Pizza Personal', 60, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMKUglo-GyXowE2Nb2bd7iODcdMVNyed8upsc3Gj5EuQ&s=10'),
+    new Producto('Tacos de Pollo', 45, 'https://campollo.com/wp-content/uploads/2024/02/GettyImages-600996126.jpeg'),
+    new Producto('Tacos de Carne', 50, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb72Lr2CAMhV0Zq_6PB2yT4fm62f4RihzTNTVdsMFghU8J62DcItfWjrK5&s=10'),
+    new Producto('Sandwich Club', 48, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_ouc3-xrrsfjaFDVPwTLpZY9wBZANiBX-G2gR43vUPHFEyxWSJgR4xhRU&s=10'),
+    new Producto('Ensalada César', 40, 'https://cantina20.com/wp-content/uploads/2023/06/ensalada-cesar.jpg'),
+    new Producto('Papas Fritas', 25, 'https://www.cocinadelirante.com/800x600/filters:format(webp):quality(75)/sites/default/files/images/2022/08/como-hacer-papas-francesa-crujientes-principal.jpg'),
+    new Producto('Alitas BBQ', 65, 'https://cdn.shopify.com/s/files/1/0614/0962/4293/files/ALITAS_DE_POLLO_BBQ__HISTORIA.jpg?v=1754074960'),
+    new Producto('Nachos Supremos', 55, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRT-NsnPamayaHrkIBdIiCIjOM99nlT7Jp5bdLcAX1JOHfoyLZxr1goK-7n&s=10'),
+
+    // Postres
+    new Producto('Pastel de Chocolate', 30, 'https://www.cocinadelirante.com/800x600/filters:format(webp):quality(75)/sites/default/files/images/2023/08/receta-de-pastel-de-chocolate-facil.jpg'),
+    new Producto('Cheesecake', 35, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUMSDiFKrIzB53hRzAndPRT8VXlNLDVKhsLUXpQR9z1as-PEspOvM_H3k&s=10'),
+    new Producto('Brownie', 25, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLYkuKt0fIUNxi79ad9IOFOXkp1FG9ic_594o5Levkn0BtXfZk8Vh7eWk&s=10'),
+    new Producto('Helado de Vainilla', 20, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5AESJ1X-_X4A8jajwuxqqG4k_4evVgTe9YL6L2NP_0hRqtuD4wAtSioaf&s=10'),
+    new Producto('Helado de Chocolate', 20, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJv2YzdAlU8454KQMazYCnjESiI62hBSRLTLTcIb3KqMUENRyrcnOIjUFW&s=10'),
+    new Producto('Flan Casero', 22, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO3ditsLW0X1VoCD4mvlI46WiAJXd4I94y0iDarE421mjm34e5WUL91Os&s=10'),
+    new Producto('Tiramisú', 38, 'https://www.recetasnestle.com.ec/sites/default/files/srh_recipes/7f45d6f8807ebc775928651a3398dce9.png'),
+
+    // Bebidas Frías
+    new Producto('Coca Cola', 15, 'https://m.media-amazon.com/images/I/61SISUGCDYL._AC_UF894,1000_QL80_.jpg'),
+    new Producto('Pepsi', 15, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRN7CpOfU_q8qq2kC9p567f3YD4sCItSFZ3ARxXlMHemA&s=10'),
+    new Producto('Agua Purificada', 10, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQW6adEic-yrAIj79hqYKCn5F1JZ7gM475IF1egOgrQDoiCSCo8MKLh8u6L&s=10'),
+    new Producto('Limonada', 18, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUgMaozBBcmCxtBTFVKLJFl6rIGzH_Fw2ld49h6qL5qwMg4cR__APDsLNo&s=10'),
+    new Producto('Té Frío', 18, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTp6thqPkcu9C_FzIJYWwLSBi4oFqglemVYxzw5Mqh6Lu3tN6wuRB7BiY&s=10'),
+    new Producto('Jugo de Naranja', 20, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsLuSKujCfuOHEvo_QArpY2xwVHxeOY1pTEh3MHDOdR4tcJe2yaNi8HoQ&s=10'),
+    new Producto('Jugo de Mango', 22, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMC18Tq5KfwQLgsSR_eeY89FIJlLC-XADZlcIW-z3_ISbGgxm8WJ-bXZs&s=10'),
+    new Producto('Malteada de Chocolate', 28, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLGrlt7T-PziXom6yOs-zVinTtE827NDIFtfZB3wAMLgMynxmX__mEjVs5&s=10'),
+    new Producto('Malteada de Fresa', 28, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQR0cPVsZXwYJatc5AgX8USq2jfqcEv0A2gThXXk69kSo2ydfx3C8OVJc&s=10'),
+    new Producto('Café Helado', 20, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCdip0AylxlBZaQRQy5WKkiLHoCTXbklp3JJYc60tDnxpvrDZ-z5nNHzpT&s=10'),
+
+    // Bebidas Calientes
+    new Producto('Café Americano', 18, 'https://gourmetdemexico.com.mx/wp-content/uploads/2016/08/field_image_head-espresso.jpg'),
+    new Producto('Café Latte', 25, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReznO3ZGVcUobEB5JPk8bUaQiaiSVCLzYH9caUssxLZ-CPxM-jzSn1aOeR&s=10'),
+    new Producto('Capuchino', 25, 'https://www.cafes-santacristina.com/sites/default/files/2023-09/capuchino.jpg'),
+    new Producto('Espresso', 15, 'https://www.cafe-mx.com/blog/app/assets/media/2018/08/cafe-expreso.jpg'),
+    new Producto('Chocolate Caliente', 22, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLyCHn9K7JRjZkVEYb3CAVcvzamFwsmw1ZDzPmMLUyThQDyiAkVANdVXE&s=10'),
+    new Producto('Té de Manzanilla', 15, 'https://comedera.com/wp-content/uploads/sites/9/2020/12/cup-829527_1280.jpg'),
+    new Producto('Té Negro', 15, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv1TvMD4UTqzNt4WILbZK9-6vOVaiRyzVV7ynngasOxbuS74w0SgP99nM&s=10'),
+    new Producto('Mocaccino', 28, 'https://osojimix.com/wp-content/uploads/2021/07/MOCACCINO.jpg')
+];
 
 ///DOM
 let contenedorMesas = document.querySelector('.mesas-grid')
@@ -373,7 +419,7 @@ let productoshtml = ''
 for (let producto of productos) {
     productoshtml += `<article class="producto-card">
             <img
-              src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80"
+              src="${producto.url}"
               alt="Hamburguesa"
             />
             <div class="producto-info">
