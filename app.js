@@ -10,7 +10,7 @@ class Producto {
     #precio;
     #url;
 
-    constructor(nombre, precio,url) {
+    constructor(nombre, precio, url) {
         this.#nombre = nombre
         this.#precio = precio
         this.#url = url
@@ -29,7 +29,7 @@ class Producto {
         return this.#id
     }
 
-    get url (){
+    get url() {
         return this.#url
     }
 
@@ -141,6 +141,12 @@ class Mesa {
 
     unirme(ids) {
         this.#mesasUnidas = [...this.#mesasUnidas, ids]
+
+        let mesaQueEstoyUniendo = restaurante.mesas.find(mesa => mesa.id == ids)
+
+        if (!mesaQueEstoyUniendo.mesasUnidas.includes(this.id)) {
+            mesaQueEstoyUniendo.unirme(this.id)
+        }
     }
 
     mostrarCuenta() {
@@ -245,8 +251,12 @@ class Comanda {
         return this.#pedidos.reduce((acumulador, actual) => acumulador + parseFloat(actual.subtotal), 0).toFixed(2)
     }
 
+    get pedidos() {
+        return this.#pedidos
+    }
+
     agregarPedido(pedido) {
-            let pedidoEncontrar = this.#pedidos.find(item => item.nombre == pedido.nombre)
+        let pedidoEncontrar = this.#pedidos.find(item => item.nombre == pedido.nombre)
         if (pedidoEncontrar == undefined) {
             this.#pedidos = [...this.#pedidos, pedido]//mutabilidad, nuevo espaicon de memoria
         } else {
@@ -355,42 +365,74 @@ let total = document.querySelector('#total')
 let cobrar = document.querySelector('#cobrar')
 let cerrarMesa = document.querySelector('#cerrar-mesa')
 let abrirCuenta = document.querySelector('#abrir-cuenta')
+let cantidadProductos = document.querySelector('#cantidad-productos')
 
 contenedorMesas.innerHTML = restaurante.normalizeMesasHTML()
 contenedorNoMesas.textContent = `${restaurante.mesasNo} Mesas`
+cantidadProductos.textContent = `${productos.length} Productos`
 let mesaActualSeleccionada;
 let mesaSeleccionada;
+let modoSeleccion = false;
 
 let btnEvento = (event) => {
+    mesaSeleccionada = restaurante.mesas.find(item => item.id == event.target.dataset.id)
     if (!event.target.className.includes('mesas-grid')) {
         if (mesaActualSeleccionada != undefined) {
             mesaActualSeleccionada.style = ''
         }
-        mesaSeleccionada = restaurante.mesas.find(item => item.id == event.target.dataset.id)
         event.target.style = 'background: green'
         if (mesaSeleccionada.estado == estados.Libre) {
             mesaSeleccionada.muestrame()
+            cobrar.classList.remove('cobrar')
+            cobrar.disabled = true;
         } else {
+            if (mesaSeleccionada.comandas[mesaSeleccionada.comandas.length - 1].pedidos.length > 0) {
+                cobrar.disabled = false;
+                cobrar.classList.add('cobrar')
+            } else {
+                cobrar.disabled = true;
+                cobrar.classList.remove('cobrar')
+            }
+
             mesaSeleccionada.mostrarCuenta()
             mesaSeleccionada.comandas[mesaSeleccionada.comandas.length - 1].renderizar()
         }
-
         mesaActualSeleccionada = event.target
-    }
 
+        if (panelComanda.classList.contains('d-none')) {
+            panelComanda.classList.remove('d-none')
+        }
+
+
+    } else {
+        alert('Seleccione una mesa libre')
+    }
 }
 
 let btnEventRojo = (event) => {
-    event.target.style = 'background-color: red'
-    mesaSeleccionada.unirme(event.target.dataset.id)
+    let mesaSeleccionadaActual = restaurante.mesas.find(item => item.id == event.target.dataset.id)
+    console.log(mesaSeleccionada)
+    if (mesaSeleccionadaActual.estado != estados.Ocupada && modoSeleccion) {
+        if (!event.target.className.includes('mesas-grid')) {
+            event.target.style = 'background-color: red'
+            mesaSeleccionada.unirme(event.target.dataset.id)
+            //event.target.unirme(mesaSeleccionada)
+            // mesaSeleccionadaActual.unirme(mesaSeleccionada)
+        }
+    } else {
+        alert('Seleccione una mesa libre')
+    }
+
 }
 contenedorMesas.addEventListener('click', btnEvento)
 let click = false;
+
 botonUnirMesa.addEventListener('click', (event) => {
     contenedorMesas.removeEventListener('click', btnEvento)
     contenedorMesas.addEventListener('click', btnEventRojo)
 
     if (click) {
+        modoSeleccion = false;
         let comandaObjeto = new Comanda([mesaSeleccionada.id])
 
         for (let i = 0; i < mesaSeleccionada.mesasUnidas.length; i++) {
@@ -409,6 +451,7 @@ botonUnirMesa.addEventListener('click', (event) => {
         mesaSeleccionada.mostrarCuenta()
         comandaObjeto.renderizar()
     } else {
+        modoSeleccion = true;
         botonUnirMesa.textContent = "Unir Mesas"
         botonUnirMesa.style = 'background-color: skyblue'
         mesaSeleccionada = restaurante.mesas.find(item => item.id == event.target.dataset.id)
@@ -420,7 +463,7 @@ for (let producto of productos) {
     productoshtml += `<article class="producto-card">
             <img
               src="${producto.url}"
-              alt="Hamburguesa"
+              alt="${producto.nombre}"
             />
             <div class="producto-info">
               <h3>${producto.nombre}</h3>
@@ -434,6 +477,8 @@ menuGrid.innerHTML = productoshtml
 
 menuGrid.addEventListener('click', (event) => {
     if (event.target.type == 'button') {
+        cobrar.disabled = false;
+        cobrar.classList.add('cobrar')
         //buscar porducto seleccionado
         let producto = productos.find(item => item.id == event.target.dataset.id)
         //crear un pedido
@@ -451,23 +496,44 @@ menuGrid.addEventListener('click', (event) => {
 })
 
 cobrar.addEventListener('click', (event) => {
-    mesaSeleccionada.comandas[mesaSeleccionada.comandas.length - 1].cobrar()
-    const nuevaComanda = new Comanda([mesaSeleccionada.id])
-    for (let i = 0; i < mesaSeleccionada.mesasUnidas.length; i++) {
-        let mesaAUnir = restaurante.mesas.find(item => item.id == mesaSeleccionada.mesasUnidas[i])
+    let cambiandoMesaPrincipal = mesaSeleccionada
+
+    //Cuando seleccionen una mesa secundaria, voy a buscar la principal
+    if (mesaSeleccionada.mesasUnidas.length == 1) {
+        cambiandoMesaPrincipal = restaurante.mesas.find(item => item.id == mesaSeleccionada.mesasUnidas[0])
+    }
+
+    cambiandoMesaPrincipal.comandas[cambiandoMesaPrincipal.comandas.length - 1].cobrar()
+
+    const nuevaComanda = new Comanda([cambiandoMesaPrincipal.id])
+
+    for (let i = 0; i < cambiandoMesaPrincipal.mesasUnidas.length; i++) {
+        let mesaAUnir = restaurante.mesas.find(item => item.id == cambiandoMesaPrincipal.mesasUnidas[i])
         mesaAUnir.ingresarComanda(nuevaComanda)
     }
-    mesaSeleccionada.ingresarComanda(nuevaComanda)
+
+    cambiandoMesaPrincipal.ingresarComanda(nuevaComanda)
     cerrarMesa.disabled = false;
+    cobrar.disabled = true;
+    cobrar.classList.remove('cobrar')
 })
 
 cerrarMesa.addEventListener('click', (event) => {
-    mesaSeleccionada.cobrarMesa()
-    for (let i = 0; i < mesaSeleccionada.mesasUnidas.length; i++) {
-        let mesaAUnir = restaurante.mesas.find(item => item.id == mesaSeleccionada.mesasUnidas[i])
+
+    let cambiandoMesaPrincipal = mesaSeleccionada
+
+    //Cuando seleccionen una mesa secundaria, voy a buscar la principal
+    if (mesaSeleccionada.mesasUnidas.length == 1) {
+        cambiandoMesaPrincipal = restaurante.mesas.find(item => item.id == mesaSeleccionada.mesasUnidas[0])
+    }
+
+    cambiandoMesaPrincipal.cobrarMesa()
+
+    for (let i = 0; i < cambiandoMesaPrincipal.mesasUnidas.length; i++) {
+        let mesaAUnir = restaurante.mesas.find(item => item.id == cambiandoMesaPrincipal.mesasUnidas[i])
         mesaAUnir.cobrarMesa()
     }
-    mesaSeleccionada.eliminarComanda()
+    cambiandoMesaPrincipal.eliminarComanda()
     contenedorMesas.innerHTML = restaurante.normalizeMesasHTML()
     panelComanda.classList.add('d-none')
 })
@@ -479,6 +545,9 @@ abrirCuenta.addEventListener('click', (event) => {
     mesaSeleccionada.ingresarComanda(comandaObjeto)
     contenedorMesas.innerHTML = restaurante.normalizeMesasHTML()
     mesaSeleccionada.mostrarCuenta()
+    comandaObjeto.renderizar()
 })
 
 //Dar uso a clases con herencia
+//Dar uso a cancelar comanda: el boton
+//El boton de cerrar mesa no se desabilita
